@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V&Q Store - Sản phẩm</title>
+    <link href="font.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html"><img src="img/Logo V&Q Store.png"></a>
+                </div>
+                <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." oninput="searchProducts()">
+                <nav class="desktop-nav">
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li class="dropdown">
+                            <a href="products.html">Sản phẩm</a>
+                            <div class="dropdown-content">
+                                <div class="dropdown-column">
+                                    <h4>Thể loại</h4>
+                                    <a href="products.html?purpose=Gaming">Gaming</a>
+                                    <a href="products.html?purpose=Thin-light">Thin & Light</a>
+                                    <a href="products.html?purpose=Graphic">Graphic</a>
+                                    <a href="products.html?purpose=Office">Office</a>
+                                </div>
+                                <div class="dropdown-column">
+                                    <h4>Hãng</h4>
+                                    <a href="products.html?brand=ASUS">ASUS</a>
+                                    <a href="products.html?brand=Dell">Dell</a>
+                                    <a href="products.html?brand=Apple">Apple</a>
+                                    <a href="products.html?brand=Lenovo">Lenovo</a>
+                                    <a href="products.html?brand=MSI">MSI</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="about.html">Giới thiệu</a></li>
+                        <li><a href="contact.html">Liên hệ</a></li>
+                    </ul>
+                </nav>
+                <div class="header-icons">
+                    <button class="hamburger-btn" onclick="toggleMobileMenu()">☰</button>
+                    <a href="cart.html">🛒</a>
+                    <a href="#" onclick="openModal('compareModal')">🔍</a>
+                    <a href="auth.html">👤</a>
+                </div>
+            </div>
+        </header>
+
+        <nav class="mobile-nav" id="mobileNav">
+            <button class="close-btn" onclick="toggleMobileMenu()">✖</button>
+            <ul>
+                <li><a href="index.html">Trang chủ</a></li>
+                <li class="mobile-dropdown-toggle">Sản phẩm</a>
+                    <ul class="mobile-dropdown">
+                        <li><a href="products.html?purpose=Gaming">Gaming</a></li>
+                        <li><a href="products.html?purpose=Thin-light">Thin & Light</a></li>
+                        <li><a href="products.html?purpose=Graphic">Graphic</a></li>
+                        <li><a href="products.html?purpose=Office">Office</a></li>
+                    </ul>
+                </li>
+                <li><a href="about.html">Giới thiệu</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+            </ul>
+        </nav>
+
+       
+            <section class="products">
+                <h2>Sản phẩm</h2>
+                <div id="productGrid" class="product-grid"></div>
+            </section>
+        </div>
+
+         <footer>
+            <div class="container footer-content">
+                <div class="footer-column">
+                    <h4>Về chúng tôi</h4>
+                    <p>V&Q Store - Địa chỉ uy tín cung cấp laptop công nghệ cao giá rẻ.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Liên hệ:</h4>
+                    <a href="tel">CSKH:0789838686</a><br>
+                    <a href="#">Email:V&Qstore@gmail.com </a>
+                </div>
+                <div class="footer-column">
+                    <h4>Theo dõi</h4>
+                    <div class="social-links">
+                        <a href="#">Facebook</a>
+						<a href="#">Zalo</a>
+                        <a href="#">Instagram</a>
+                        <a href="#">Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <p>© 2025 V&Q Store. Nâng tầm trải nghiệm công nghệ.</p>
+        </footer>
+    </div>
+
+    <div id="compareModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('compareModal')">✖</span>
+            <h2>So sánh sản phẩm</h2>
+            <ul id="compareItems"></ul>
+        </div>
+    </div>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

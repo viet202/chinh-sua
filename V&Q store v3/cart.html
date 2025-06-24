@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng - V&Q Store</title>
+    <link href="font.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background: linear-gradient(to right, #3ceda4, #feb47b)">
+    <<div class="wrapper">
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <div class="logo">
+                    <a href="index.html"><img src="./img/logo.png" alt="V&Q Store"></a>
+                </div>
+                <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." oninput="searchProducts()" autocomplete="off">
+                <nav class="desktop-nav">
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li class="dropdown">
+                            <a href="products.html">Sản phẩm</a>
+                            <div class="dropdown-content">
+                                <div class="dropdown-column">
+                                    <h4>Thể loại</h4>
+                                    <a href="products.html?purpose=gaming">Gaming</a>
+                                    <a href="products.html?purpose=thin-light">Thin & Light</a>
+                                    <a href="products.html?purpose=graphic">Graphic</a>
+                                    <a href="products.html?purpose=office">Office</a>
+                                </div>
+                                <div class="dropdown-column">
+                                    <h4>Hãng</h4>
+                                    <a href="products.html?brand=ASUS">ASUS</a>
+                                    <a href="products.html?brand=Dell">Dell</a>
+                                    <a href="products.html?brand=Apple">Apple</a>
+                                    <a href="products.html?brand=Lenovo">Lenovo</a>
+                                    <a href="products.html?brand=MSI">MSI</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li><a href="about.html">Giới thiệu</a></li>
+                        <li><a href="contact.html">Liên hệ</a></li>
+                    </ul>
+                </nav>
+                <div class="header-icons">
+                    <button class="hamburger-btn" onclick="toggleMobileMenu()">☰</button>
+                    <a href="cart.html">🛒</a>
+                    <button onclick="openModal('compareModal')">🔍</button>
+                    <a href="auth.html">👤</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Mobile Menu -->
+        <nav class="mobile-nav" id="mobileNav">
+            <button class="close-btn" onclick="toggleMobileMenu()">✖</button>
+            <ul>
+                <li><a href="index.html">Trang chủ</a></li>
+                <li>
+                    <a href="products.html" class="mobile-dropdown-toggle">Sản phẩm</a>
+                    <ul class="mobile-dropdown">
+                        <li><a href="products.html?purpose=gaming">Gaming</a></li>
+                        <li><a href="products.html?purpose=thin-light">Thin & Light</a></li>
+                        <li><a href="products.html?purpose=graphic">Graphic</a></li>
+                        <li><a href="products.html?purpose=office">Office</a></li>
+                    </ul>
+                </li>
+                <li><a href="about.html">Giới thiệu</a></li>
+                <li><a href="contact.html">Liên hệ</a></li>
+            </ul>
+        </nav>
+
+        <!-- Cart Section -->
+        <section class="cart">
+            <div class="container">
+                <h2>Giỏ hàng</h2>
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Tổng phụ</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartItems"></tbody>
+                </table>
+                <div class="cart-summary">
+                    <div class="promo-code">
+                        <input type="text" id="promoCode" placeholder="Nhập mã khuyến mãi">
+                        <button onclick="applyPromoCode()">Áp dụng</button>
+                    </div>
+                    <p class="cart-total" id="cartTotal">Tổng: 0 VNĐ</p>
+                    <button class="clear-cart-btn" onclick="clearCart()">Xóa giỏ hàng</button>
+                </div>
+                <div class="checkout-form">
+                    <h3>Thông tin thanh toán</h3>
+                    <div class="form-group">
+                        <label for="paymentMethod">Phương thức thanh toán:</label>
+                        <select id="paymentMethod">
+                            <option value="cod">Thanh toán khi nhận hàng</option>
+                            <option value="online">Thanh toán online</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Tên:</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Địa chỉ:</label>
+                        <input type="text" id="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại:</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <button class="checkout-btn" onclick="submitPayment()">Thanh toán</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-column">
+                        <h4>Về chúng tôi</h4>
+                        <p>V&Q Store - Địa chỉ uy tín cung cấp laptop công nghệ cao giá rẻ.</p>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Liên hệ</h4>
+                        <p>CSKH: 0789838686</p>
+                        <p>Email: info@vqstore.com</p>
+                        <p>Địa chỉ: số 88 - ngách 189 - Cầu Giấy - Hà Nội</p>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Theo dõi</h4>
+                        <div class="social-links">
+                            <a href="#">Facebook</a>
+                            <a href="#">Zalo</a>
+                            <a href="#">Instagram</a>
+                            <a href="#">Twitter</a>
+                        </div>
+                    </div>
+                </div>
+                <p>© 2025 V&Q Store. Nâng tầm trải nghiệm công nghệ.</p>
+            </div>
+		</footer>
+    </div>
+	<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
